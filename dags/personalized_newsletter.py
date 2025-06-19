@@ -1,6 +1,6 @@
 import os
 from pendulum import datetime, duration
-from airflow.sdk import Asset, dag, task
+from airflow.sdk import Asset, dag, task, asset
 
 
 OBJECT_STORAGE_SYSTEM = os.getenv(
@@ -17,6 +17,7 @@ OBJECT_STORAGE_PATH_USER_INFO = os.getenv(
 )
 _WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={long}&current=temperature_2m,relative_humidity_2m,apparent_temperature"
 COHERE_CONN_ID = "cohere_conn"
+
 SYSTEM_PROMPT = (
 "You are {favorite_sci_fi_character} "
 "giving advice to your best friend {name}. "
@@ -45,7 +46,7 @@ def _get_lat_long(location):
 
 @dag(
     start_date=datetime(2025, 3, 1),
-    schedule=[Asset("formatted_newspaper")],
+    schedule=[Asset("formatted_newsletter")],
     default_args={
         "retries": 2,
         "retry_delay": duration(minutes=3),
