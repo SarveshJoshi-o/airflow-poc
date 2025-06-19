@@ -249,9 +249,9 @@ def personalized_newsletter():
 
         generic_content = daily_newsletter_path.read_text()
 
-        updated_content = generic_content.replace(
-            "Hello Cosmic Traveler,", new_greeting
-        )
+        print(new_greeting)
+
+        updated_content = generic_content.replace("Hello Cosmic Traveller,", new_greeting)
 
         personalized_quote = (
             f"\n-----------\n"
@@ -260,7 +260,7 @@ def personalized_newsletter():
             f"-----------"
         )
 
-        updated_content = updated_content.replace(
+        updated_content_quote = updated_content.replace(
             "Have a fantastic journey!",
             f"{personalized_quote}\n\nHave a fantastic journey!",
         )
@@ -269,10 +269,9 @@ def personalized_newsletter():
                 object_storage_path / f"{date}_newsletter_userid_{id}.txt"
         )
 
-        print(updated_content)
-
-        personalized_newsletter_path.write_text(updated_content)
+        personalized_newsletter_path.write_text(updated_content_quote)
 
     create_personalized_newsletter.expand(user=_combine_information)
+
 
 personalized_newsletter()
