@@ -13,7 +13,7 @@ default_args = {
     dag_id='prompt_embedding_pipeline',
     default_args={
         "retries": 2,
-        "retry_delay": duration(minutes=3),
+        "retry_delay": pendulum.duration(minutes=3),
     },
     schedule=None,  # manual/external trigger
     tags=['embedding', 'langchain'],
