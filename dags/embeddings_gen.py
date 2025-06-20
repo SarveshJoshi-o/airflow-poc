@@ -1,5 +1,5 @@
 from airflow.decorators import dag, task
-from langchain_cohere import CohereEmbeddings
+from langchain_community.embeddings import CohereEmbeddings
 from typing import List
 import pendulum
 
