@@ -1,5 +1,6 @@
 from airflow.decorators import dag, task
 from langchain_community.embeddings import CohereEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from typing import List
 import pendulum
 import os
@@ -31,15 +32,16 @@ def prompt_embedding_pipeline():
 
     @task
     def convert_prompt_to_embedding(user_prompt: str) -> List[float]:
-        cohere_api_key = os.environ.get("COHERE_API_KEY")
-        if not cohere_api_key:
-            raise ValueError("COHERE_API_KEY environment variable not set.")
-
-        embedding_model = CohereEmbeddings(
-            model="embed-english-v3.0",
-            cohere_api_key=cohere_api_key,
-            client_kwargs={"user_agent": "airflow-cohere-client/1.0"}
-        )
+        # cohere_api_key = os.environ.get("COHERE_API_KEY")
+        # if not cohere_api_key:
+        #     raise ValueError("COHERE_API_KEY environment variable not set.")
+        #
+        # embedding_model = CohereEmbeddings(
+        #     model="embed-english-v3.0",
+        #     cohere_api_key=cohere_api_key,
+        #     client_kwargs={"user_agent": "airflow-cohere-client/1.0"}
+        # )
+        embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/multi-qa-MiniLM-L6-cos-v1")
         embedding = embedding_model.embed_query(user_prompt)
         return embedding
 
