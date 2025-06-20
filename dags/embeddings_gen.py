@@ -11,9 +11,11 @@ default_args = {
 # Define the DAG using the @dag decorator
 @dag(
     dag_id='prompt_embedding_pipeline',
-    default_args=default_args,
-    schedule_interval=None,  # manual/external trigger
-    catchup=False,
+    default_args={
+        "retries": 2,
+        "retry_delay": duration(minutes=3),
+    },
+    schedule=None,  # manual/external trigger
     tags=['embedding', 'langchain'],
 )
 def prompt_embedding_pipeline():
@@ -24,11 +26,15 @@ def prompt_embedding_pipeline():
         user_prompt = "What is the future of AI?"
         return user_prompt
 
+    _fetch_prompt = fetch_prompt()
+
     @task
     def convert_prompt_to_embedding(user_prompt: str) -> List[float]:
         embedding_model = CohereEmbeddings(model="embed-english-v3.0")
         embedding = embedding_model.embed_query(user_prompt)
         return embedding
+
+    _convert_prompt_to_embedding = convert_prompt_to_embedding(_fetch_prompt)
 
     @task
     def store_embedding(embedding: List[float]) -> None:
@@ -36,9 +42,8 @@ def prompt_embedding_pipeline():
         print(f"Storing embedding: {embedding}")
 
     # Define task dependencies by function call chaining
-    prompt = fetch_prompt()
-    embedding = convert_prompt_to_embedding(prompt)
-    store_embedding(embedding)
+
+    store_embedding(_convert_prompt_to_embedding)
 
 # Instantiate the DAG
 prompt_embedding_pipeline()
