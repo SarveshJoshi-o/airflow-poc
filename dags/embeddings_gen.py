@@ -1,13 +1,11 @@
 from airflow.decorators import dag, task
-from airflow.utils.dates import days_ago
 from langchain_cohere import CohereEmbeddings
 from typing import List
-import datetime
+import pendulum
 
-# Define default DAG args
 default_args = {
     'owner': 'airflow',
-    'start_date': days_ago(1),
+    'start_date': pendulum.now("UTC").subtract(days=1),
 }
 
 # Define the DAG using the @dag decorator
