@@ -129,9 +129,6 @@ def personalized_newsletter():
             series=series,
         )
         user_prompt = "The quotes to modify are:\n\n".join(quotes)
-        # Cohere chat() typically expects a message, not a list of messages like OpenAI.
-        # Combine system prompt + user prompt into a single string if needed.
-        full_prompt = f"{system_prompt}\n{user_prompt}"
 
         response = client.chat(
             messages=[
