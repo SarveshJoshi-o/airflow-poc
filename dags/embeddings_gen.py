@@ -1,6 +1,6 @@
 from airflow.decorators import dag, task
-from langchain_community.embeddings import CohereEmbeddings
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import CohereEmbeddings, HuggingFaceEmbeddings
+# from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from typing import List
 import pendulum
 import os
