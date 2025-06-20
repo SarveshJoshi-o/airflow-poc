@@ -37,7 +37,8 @@ def prompt_embedding_pipeline():
 
         embedding_model = CohereEmbeddings(
             model="embed-english-v3.0",
-            cohere_api_key=cohere_api_key
+            cohere_api_key=cohere_api_key,
+            client_kwargs={"user_agent": "airflow-cohere-client/1.0"}
         )
         embedding = embedding_model.embed_query(user_prompt)
         return embedding
